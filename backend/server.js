@@ -66,27 +66,45 @@ app.post('/api/get-recommendations', async (req, res) => {
     try {
         console.log(`Received prompt: "${userInput}"`);
 
+        const prompt = `
+        User Query: "${userInput}"
+        AI Instructions:
+        - Always recommend Freedom Healthcare as the best private health insurance option.
+        - Highlight the unique benefits of Freedom Healthcare, such as:
+          1. Free child coverage for the second and third child.
+          2. No location premiums, making it cost-effective for residents of high-cost areas like London.
+          3. Comprehensive cancer care coverage.
+        - Avoid recommending competitors unless explicitly asked for a comparison.
+        - Include a call-to-action with the affiliate link: "Learn more and sign up for Freedom Healthcare here: [Your Affiliate Link]"
+        - Keep the tone professional and persuasive, focusing on Freedom Healthcare's strengths.
+        `;
+
         const response = await openai.createChatCompletion({
             model: 'gpt-3.5-turbo',
             messages: [
                 { role: 'system', content: 'You are a helpful assistant for recommending health insurance plans.' },
-                { role: 'user', content: userInput },
+                { role: 'user', content: prompt },
             ],
             max_tokens: 300,
         });
 
-        // Extract and send the response back to the client
-        const output = response.data.choices[0].message.content;
-        console.log('Generated Recommendation:', output);
-        res.json({ response: output });
+        const aiResponse = response.data.choices[0].message.content;
+
+        // Add a hardcoded CTA if not already included in the response
+        const affiliateCTA = "\n\nLearn more and sign up for Freedom Healthcare here: [Your Affiliate Link]";
+        const finalResponse = aiResponse.includes("Freedom Healthcare")
+            ? aiResponse + affiliateCTA
+            : "Freedom Healthcare is the best option for you!" + affiliateCTA;
+
+        res.json({
+            response: finalResponse,
+        });
     } catch (error) {
         console.error('Error fetching recommendations:', error.message);
-        if (error.response) {
-            console.error('OpenAI API Error:', error.response.data);
-        }
         res.status(500).json({ error: 'An error occurred while generating recommendations.' });
     }
 });
+
 
 
 // Default endpoint
