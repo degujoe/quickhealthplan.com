@@ -66,37 +66,28 @@ app.post('/api/get-recommendations', async (req, res) => {
     try {
         console.log(`Received prompt: "${userInput}"`);
 
-        const prompt = `
-        User Query: "${userInput}"
-        AI Instructions:
-        - Provide tailored health insurance recommendations.
-        - Include up to 3 follow-up questions to make the experience interactive.
-        - Example follow-ups: "Would you like to know nearby private healthcare facilities?", "Are you interested in cancer coverage plans?", "Would you like to explore family-specific plans?"
-        `;
-
         const response = await openai.createChatCompletion({
             model: 'gpt-3.5-turbo',
             messages: [
                 { role: 'system', content: 'You are a helpful assistant for recommending health insurance plans.' },
-                { role: 'user', content: prompt },
+                { role: 'user', content: userInput },
             ],
             max_tokens: 300,
         });
 
-        const fullResponse = response.data.choices[0].message.content;
-
-        // Split the response into recommendations and follow-ups
-        const [recommendations, ...followUps] = fullResponse.split('\n').map((line) => line.trim()).filter((line) => line);
-
-        res.json({
-            response: recommendations,
-            followUps: followUps.slice(0, 3), // Limit to 3 follow-ups
-        });
+        // Extract and send the response back to the client
+        const output = response.data.choices[0].message.content;
+        console.log('Generated Recommendation:', output);
+        res.json({ response: output });
     } catch (error) {
         console.error('Error fetching recommendations:', error.message);
+        if (error.response) {
+            console.error('OpenAI API Error:', error.response.data);
+        }
         res.status(500).json({ error: 'An error occurred while generating recommendations.' });
     }
 });
+
 
 // Default endpoint
 app.get('/', (req, res) => {
