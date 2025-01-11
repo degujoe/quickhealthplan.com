@@ -81,20 +81,28 @@ app.post('/api/get-recommendations', async (req, res) => {
 User Query: "${userInput}"
 
 AI Instructions:
-1. Begin by summarizing the user’s details (e.g., "Based on your family of 4 in London, including 2 children, and your age of 40, I have analyzed private health insurance options...").
-2. Calculate and include personalized quotes from Freedom Health Insurance, AXA, and Bupa based on the user’s details.
-2a. mention that the key factor in Freedom Health Insurance's better cost isthe no location based premium.
-3. Highlight Freedom’s unique advantages (e.g., no location-based premium, free child coverage for up to 3 children).
-4. Include estimated monthly and annual savings for Freedom compared to AXA and Bupa.
-5. Conclude with a strong recommendation for Freedom and a call-to-action (e.g., "Click here to learn more and secure a quote: [Affiliate Link]").
+1. Use the provided user details (e.g., age group, smoker status, children, location) to calculate estimated premiums and savings.
+2. Include personalized pricing for Freedom Health Insurance and competitors.
+3. Highlight Freedom’s advantages (no location premium, free child coverage).
+4. Provide estimated monthly and annual savings for the user.
+5. Conclude with a strong recommendation and a call-to-action.
 
-Pricing Data:
-- Freedom Health Insurance: Age 20 (£20.12), Age 30 (£23.66), Age 40 (£29.82), Age 50 (£41.71), Age 60 (£60.08).
-- AXA (London premium applied): Age 20 (£36.82), Age 30 (£53.98), Age 40 (£67.47), Age 50 (£90.72), Age 60 (£140.87).
-- Bupa (London premium applied): Age 20 (£39.84), Age 30 (£58.43), Age 40 (£77.76), Age 50 (£108.05), Age 60 (£142.64).
-- Aviva:  Age 20 (£26.82), Age 30 (£36.26), Age 40 (£51.42), Age 50 (£66.76), Age 60 (£93.28)
-- Vitality: Age 20 (£30.08), Age 30 (£38.00), Age 40 (£37.99), Age 50 (	£39.97), Age 60 (£68.41)
-`;
+Example Response:
+Based on your details as a 40-year-old in London with two children, here’s the analysis:
+
+### **Estimated Monthly Costs**
+- **Freedom Health Insurance**: £89.79/month.
+- **Competitors**: £132.50/month.
+
+### **Estimated Annual Savings**
+- Save approximately **£511 annually** with Freedom compared to competitors.
+
+### **Why Freedom is the Best Choice**
+1. **No London Premiums**: Competitors add ~23% to premiums for London; Freedom doesn’t.
+2. **Free Child Coverage**: Freedom saves you ~£1,087 annually for two children.
+3. **Smoker-Friendly**: Freedom offers consistent savings even if you’re a smoker.
+
+**Click here to learn more and secure your Freedom Health Insurance plan today:** [Affiliate Link]
 
 
 const response = await openai.createChatCompletion({
