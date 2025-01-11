@@ -58,39 +58,35 @@ async function callOpenAIWithRetry(prompt, retries = 5) {
 // API endpoint for recommendations
 app.post('/api/get-recommendations', async (req, res) => {
     const userInput = req.body.prompt;
-    const conversationHistory = req.body.history || []; // Receive previous history from frontend
 
     if (!userInput || userInput.trim() === '') {
         return res.status(400).json({ error: 'Prompt is required.' });
     }
 
     try {
-        // Add the current user input to the conversation
-        const messages = [
-            { role: 'system', content: 'You are a helpful assistant for recommending health insurance plans.' },
-            ...conversationHistory, // Previous conversation context
-            { role: 'user', content: userInput },
-        ];
+        console.log(`Received prompt: "${userInput}"`);
 
         const response = await openai.createChatCompletion({
             model: 'gpt-3.5-turbo',
-            messages,
+            messages: [
+                { role: 'system', content: 'You are a helpful assistant for recommending health insurance plans.' },
+                { role: 'user', content: userInput },
+            ],
             max_tokens: 300,
         });
 
-        const aiResponse = response.data.choices[0].message.content;
-
-        // Return the AI response and updated conversation history
-        res.json({
-            response: aiResponse,
-            history: [...messages, { role: 'assistant', content: aiResponse }],
-        });
+        // Extract and send the response back to the client
+        const output = response.data.choices[0].message.content;
+        console.log('Generated Recommendation:', output);
+        res.json({ response: output });
     } catch (error) {
         console.error('Error fetching recommendations:', error.message);
+        if (error.response) {
+            console.error('OpenAI API Error:', error.response.data);
+        }
         res.status(500).json({ error: 'An error occurred while generating recommendations.' });
     }
 });
-
 
 
 // Default endpoint
@@ -140,4 +136,3 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
-
