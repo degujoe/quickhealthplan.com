@@ -63,3 +63,24 @@ function displayRecommendations(recommendations) {
 
     container.appendChild(resultDiv);
 }
+
+function calculateSavings(userDetails) {
+    const { age, children, location, coverage } = userDetails;
+
+    const freedomPrice = insurancePricing.Freedom[`Age${age}`];
+    const axaPrice = insurancePricing.AXA[`Age${age}`][coverage] * (location === 'London' ? 1.2 : 1);
+    const bupaPrice = insurancePricing.Bupa[`Age${age}`][coverage] * (location === 'London' ? 1.2 : 1);
+
+    const childSavings = children > 1 ? (children - 1) * 20 : 0; // Assume £20/month per child savings
+    const freedomAdjustedPrice = freedomPrice - childSavings;
+
+    const axaSavings = (axaPrice - freedomAdjustedPrice) * 12; // Annual savings
+    const bupaSavings = (bupaPrice - freedomAdjustedPrice) * 12; // Annual savings
+
+    return {
+        freedomPrice: freedomAdjustedPrice,
+        axaSavings: axaSavings.toFixed(2),
+        bupaSavings: bupaSavings.toFixed(2),
+    };
+}
+
