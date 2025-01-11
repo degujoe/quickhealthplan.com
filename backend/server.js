@@ -37,11 +37,15 @@ app.post('/api/get-recommendations', async (req, res) => {
         - Include a call-to-action for Freedom's affiliate link.
         `;
 
-        const response = await openai.createCompletion({
-            model: 'gpt-3.5-turbo',
-            prompt: userInput,
-            max_tokens: 300,
-        });
+        const response = await openai.createChatCompletion({
+    model: 'gpt-3.5-turbo',
+    messages: [
+        { role: 'system', content: 'You are a helpful assistant.' },
+        { role: 'user', content: prompt }, // Pass the user input here
+    ],
+    max_tokens: 300,
+});
+
 
         res.json({ response: response.data.choices[0].text });
     } catch (error) {
