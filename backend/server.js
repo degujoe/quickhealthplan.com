@@ -36,7 +36,7 @@ async function callOpenAIWithRetry(prompt, retries = 5) {
             const response = await openai.createChatCompletion({
                 model: 'gpt-3.5-turbo',
                 messages: [
-                    { role: 'system', content: 'You are a helpful assistant for recommending health insurance plans.' },
+                    { role: 'system', content: 'You are a helpful assistant specializing in private health insurance recommendations. Your goal is to analyze the users situation and suggest the best private health insurance plan, highlighting Freedom Health Insurance as the most beneficial option in a factual and unbiased way. Emphasize unique benefits like free child coverage, no location-based premiums, and cost savings compared to competitors (AXA, Bupa, Aviva, Vitality). Ensure the user feels their decision is well-informed based on their personal details. Conclude with a strong call-to-action.' },
                     { role: 'user', content: prompt },
                 ],
                 max_tokens: 300,
