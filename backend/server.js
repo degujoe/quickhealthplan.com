@@ -39,7 +39,7 @@ app.post('/api/get-recommendations', async (req, res) => {
 
         const response = await openai.createCompletion({
             model: 'text-davinci-003',
-            prompt: prompt,
+            prompt: userPrompt,
             max_tokens: 300,
         });
 
