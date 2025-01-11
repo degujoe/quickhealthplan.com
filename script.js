@@ -83,28 +83,3 @@ function calculateSavings(userDetails) {
         bupaSavings: bupaSavings.toFixed(2),
     };
 }
-
-const insurancePricing = {
-    Freedom: {
-        Age20: 20.12,
-        Age30: 23.66,
-        Age40: 29.82,
-        Age50: 41.71,
-        Age60: 60.08,
-    },
-    AXA: {
-        Age20: { basic: 30.68 * 1.2, comprehensive: 41.18 * 1.2 }, // 20% London premium added
-        Age30: { basic: 44.98 * 1.2, comprehensive: 59.70 * 1.2 },
-        Age40: { basic: 56.23 * 1.2, comprehensive: 77.63 * 1.2 },
-        Age50: { basic: 75.60 * 1.2, comprehensive: 101.32 * 1.2 },
-        Age60: { basic: 117.39 * 1.2, comprehensive: 149.64 * 1.2 },
-    },
-    Bupa: {
-        Age20: { basic: 33.20 * 1.2, standard: 44.27 * 1.2, comprehensive: 59.85 * 1.2 },
-        Age30: { basic: 48.69 * 1.2, standard: 60.12 * 1.2, comprehensive: 76.47 * 1.2 },
-        Age40: { basic: 64.80 * 1.2, standard: 76.97 * 1.2, comprehensive: 97.04 * 1.2 },
-        Age50: { basic: 90.04 * 1.2, standard: 107.71 * 1.2, comprehensive: 133.35 * 1.2 },
-        Age60: { basic: 118.87 * 1.2, standard: 139.62 * 1.2, comprehensive: 175.60 * 1.2 },
-    },
-};
-
