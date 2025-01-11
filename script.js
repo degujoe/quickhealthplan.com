@@ -69,6 +69,8 @@ function displayRecommendations(recommendations) {
 
 const chatHistory = document.getElementById('chatHistory');
 
+let conversationHistory = [];
+
 async function sendMessage() {
     const userInput = document.getElementById('userInput').value.trim();
 
@@ -80,18 +82,24 @@ async function sendMessage() {
     // Append user message to chat
     appendMessage('user', userInput);
 
+    // Add user input to conversation history
+    conversationHistory.push({ role: 'user', content: userInput });
+
     try {
         const response = await fetch('https://quickhealthplan-com.onrender.com/api/get-recommendations', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ prompt: userInput }),
+            body: JSON.stringify({ prompt: userInput, history: conversationHistory }),
         });
 
         if (response.ok) {
             const data = await response.json();
             appendMessage('ai', data.response);
+
+            // Update conversation history
+            conversationHistory = data.history;
         } else {
             appendMessage('ai', 'Sorry, I could not process your request. Please try again.');
         }
@@ -103,6 +111,7 @@ async function sendMessage() {
     // Clear input box
     document.getElementById('userInput').value = '';
 }
+
 
 function appendMessage(sender, text) {
     const messageDiv = document.createElement('div');
