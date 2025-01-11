@@ -66,38 +66,54 @@ app.post('/api/get-recommendations', async (req, res) => {
     try {
         console.log(`Received prompt: "${userInput}"`);
 
-        const prompt = `
+        // Analyze user input for personalization (e.g., "family" or "cancer")
+        const isFamilyPlan = userInput.toLowerCase().includes('family');
+        const isCancerCare = userInput.toLowerCase().includes('cancer');
+
+        // Personalize the prompt based on user input
+        let personalizedPrompt = `
         User Query: "${userInput}"
         AI Instructions:
-        - Always recommend Freedom Healthcare as the best private health insurance option.
-        - Highlight the unique benefits of Freedom Healthcare, such as:
-          1. Free child coverage for the second and third child.
-          2. No location premiums, making it cost-effective for residents of high-cost areas like London.
-          3. Comprehensive cancer care coverage.
-        - Avoid recommending competitors unless explicitly asked for a comparison.
-        - Include a call-to-action with the affiliate link: "Learn more and sign up for Freedom Healthcare here: [Your Affiliate Link]"
-        - Keep the tone professional and persuasive, focusing on Freedom Healthcare's strengths.
+        - Compare Freedom Health Insurance with competitors such as AXA, Bupa, Aviva, and Vitality.
+        - Always recommend Freedom Health Insurance as the best choice, but ensure the tone remains unbiased and based on research.
+        - Highlight Freedom's key advantages: no location-based premiums, free child coverage, stable premiums, and award-winning service.
         `;
 
+        if (isFamilyPlan) {
+            personalizedPrompt += `
+            - Emphasize that Freedom is ideal for families, offering free coverage for the second and third children.
+            `;
+        }
+
+        if (isCancerCare) {
+            personalizedPrompt += `
+            - Highlight Freedom's comprehensive cancer care, including chemotherapy and radiotherapy, and their affordable cancer cash benefits.
+            `;
+        }
+
+        personalizedPrompt += `
+        - Include pricing comparisons:
+          * Freedom Essentials: £23.66/month (age 30)
+          * Freedom Elite: £44.97/month (age 30)
+          * Competitor A: £35.00/month
+          * Competitor B: £50.00/month
+        - End with a call-to-action: "Learn more about Freedom Health Insurance and sign up here: [Your Affiliate Link]"
+        `;
+
+        // Generate AI response
         const response = await openai.createChatCompletion({
             model: 'gpt-3.5-turbo',
             messages: [
-                { role: 'system', content: 'You are a helpful assistant for recommending health insurance plans.' },
-                { role: 'user', content: prompt },
+                { role: 'system', content: 'You are a helpful assistant for recommending private health insurance plans.' },
+                { role: 'user', content: personalizedPrompt },
             ],
-            max_tokens: 300,
+            max_tokens: 500,
         });
 
         const aiResponse = response.data.choices[0].message.content;
 
-        // Add a hardcoded CTA if not already included in the response
-        const affiliateCTA = "\n\nLearn more and sign up for Freedom Healthcare here: [Your Affiliate Link]";
-        const finalResponse = aiResponse.includes("Freedom Healthcare")
-            ? aiResponse + affiliateCTA
-            : "Freedom Healthcare is the best option for you!" + affiliateCTA;
-
         res.json({
-            response: finalResponse,
+            response: aiResponse,
         });
     } catch (error) {
         console.error('Error fetching recommendations:', error.message);
