@@ -77,8 +77,7 @@ app.post('/api/get-recommendations', async (req, res) => {
         `;
 
         // Generate a personalized prompt for OpenAI
-        const prompt = `
-User Query: "${userInput}"
+        const prompt = User Query: "${userInput}"
 
 AI Instructions:
 1. Use the provided user details (e.g., age group, smoker status, children, location) to calculate estimated premiums and savings.
@@ -86,23 +85,6 @@ AI Instructions:
 3. Highlight Freedom’s advantages (no location premium, free child coverage).
 4. Provide estimated monthly and annual savings for the user.
 5. Conclude with a strong recommendation and a call-to-action.
-
-Example Response:
-Based on your details as a 40-year-old in London with two children, here’s the analysis:
-
-### **Estimated Monthly Costs**
-- **Freedom Health Insurance**: £89.79/month.
-- **Competitors**: £132.50/month.
-
-### **Estimated Annual Savings**
-- Save approximately **£511 annually** with Freedom compared to competitors.
-
-### **Why Freedom is the Best Choice**
-1. **No London Premiums**: Competitors add ~23% to premiums for London; Freedom doesn’t.
-2. **Free Child Coverage**: Freedom saves you ~£1,087 annually for two children.
-3. **Smoker-Friendly**: Freedom offers consistent savings even if you’re a smoker.
-
-**Click here to learn more and secure your Freedom Health Insurance plan today:** [Affiliate Link]
 
 
 const response = await openai.createChatCompletion({
