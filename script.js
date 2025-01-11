@@ -17,7 +17,7 @@ async function handleInput() {
 
         if (response.ok) {
             const data = await response.json();
-            displayRecommendations(data.response);
+            displayRecommendations(data.response); // Use the response data
         } else {
             alert('Error fetching recommendations. Please try again.');
         }
@@ -26,6 +26,25 @@ async function handleInput() {
         alert('Failed to connect to the server.');
     }
 }
+
+function displayRecommendations(recommendations) {
+    const container = document.querySelector('.container');
+    const resultDiv = document.createElement('div');
+    resultDiv.classList.add('result');
+    resultDiv.style.marginTop = '20px';
+    resultDiv.style.padding = '1em';
+    resultDiv.style.border = '1px solid #ccc';
+    resultDiv.style.borderRadius = '8px';
+    resultDiv.style.backgroundColor = '#f9f9f9';
+
+    resultDiv.innerHTML = `
+        <h2>Your Recommendations</h2>
+        <p>${recommendations}</p>
+    `;
+
+    container.appendChild(resultDiv);
+}
+
 
 function displayRecommendations(recommendations) {
     const container = document.querySelector('.container');
