@@ -81,6 +81,35 @@ app.get('/', (req, res) => {
     res.send('Backend for QuickHealthPlan is running.');
 });
 
+
+app.get('/test-openai', async (req, res) => {
+    try {
+        const { Configuration, OpenAIApi } = require('openai');
+
+        const openai = new OpenAIApi(
+            new Configuration({
+                apiKey: process.env.OPENAI_API_KEY,
+            })
+        );
+
+        const response = await openai.createChatCompletion({
+            model: 'gpt-3.5-turbo',
+            messages: [
+                { role: 'user', content: 'Test request to OpenAI API.' },
+            ],
+            max_tokens: 50,
+        });
+
+        res.json({ message: 'OpenAI API works!', data: response.data });
+    } catch (error) {
+        console.error('Error testing OpenAI API:', error);
+        res.status(500).json({ error: error.response?.data || error.message });
+    }
+});
+
+
+
+
 // Start the server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
