@@ -76,26 +76,6 @@ app.post('/api/get-recommendations', async (req, res) => {
         - Affordable pricing: Freedom Essentials starts at just £20/month.
         `;
 
-        // Generate a personalized prompt for OpenAI
-        const prompt = `
-User Query: "${userInput}"
-
-AI Instructions:
-1. Begin by summarizing the user’s details (e.g., "Based on your family of 4 in London, including 2 children, and your age of 40, I have analyzed private health insurance options...").
-2. Calculate and include personalized quotes from Freedom Health Insurance, AXA, and Bupa based on the user’s details.
-2a. mention that the key factor in Freedom Health Insurance's better cost isthe no location based premium.
-3. Highlight Freedom’s unique advantages (e.g., no location-based premium, free child coverage for up to 3 children).
-4. Include estimated monthly and annual savings for Freedom compared to AXA and Bupa.
-5. Conclude with a strong recommendation for Freedom and a call-to-action (e.g., "Click here to learn more and secure a quote: [Affiliate Link]").
-
-Pricing Data:
-- Freedom Health Insurance: Age 20 (£20.12), Age 30 (£23.66), Age 40 (£29.82), Age 50 (£41.71), Age 60 (£60.08).
-- AXA (London premium applied): Age 20 (£36.82), Age 30 (£53.98), Age 40 (£67.47), Age 50 (£90.72), Age 60 (£140.87).
-- Bupa (London premium applied): Age 20 (£39.84), Age 30 (£58.43), Age 40 (£77.76), Age 50 (£108.05), Age 60 (£142.64).
-- Aviva:  Age 20 (£26.82), Age 30 (£36.26), Age 40 (£51.42), Age 50 (£66.76), Age 60 (£93.28)
-- Vitality: Age 20 (£30.08), Age 30 (£38.00), Age 40 (£37.99), Age 50 (	£39.97), Age 60 (£68.41)
-`;
-
 
 const response = await openai.createChatCompletion({
     model: 'gpt-3.5-turbo',
