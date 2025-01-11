@@ -78,32 +78,47 @@ app.post('/api/get-recommendations', async (req, res) => {
 
         // Generate a personalized prompt for OpenAI
         const prompt = `
-        User Query: "${userInput}"
-        
-        AI Instructions:
-You are an advanced assistant that provides highly personalized recommendations for private health insurance. Based on the user’s input, analyze quotes and features from major competitors (AXA, Bupa, Aviva, Vitality) and Freedom Health Insurance. 
+User Query: "${userInput}"
 
-Structure your response as follows:
-1. Begin by acknowledging the user's specific details (e.g., family size, location) and state that you’ve analyzed quotes from major providers.
-2. Highlight Freedom’s benefits tailored to their situation, using these key points:
-   - For users in high-premium areas like London, emphasize savings due to Freedom's no location-based pricing.
-   - For families, explicitly mention free child coverage for the second and third child, calculating approximate savings based on their family size.
-   - Include specific pricing examples where possible (e.g., Freedom Essentials at £23.66/month vs. AXA at £35/month).
-   - Mention Freedom’s premium stability for two years, even after claims.
-3. Conclude with a compelling recommendation and a clear call-to-action to learn more and sign up via your affiliate link.
+AI Instructions:
+You are an advanced assistant helping users compare private health insurance providers. Always tailor your response based on the user's details and compare Freedom Health Insurance to competitors (AXA, Bupa, Aviva). Highlight Freedom's strengths while subtly addressing competitors' weaknesses.
 
-Ensure the response feels unbiased, professional, and tailored to the user's details, while subtly promoting Freedom Health Insurance as the best choice.
+Here’s the data to use for comparisons:
+- Freedom Pros: 
+  - Freedom is the only UK insurance that doesn’t set health insurance prices based on your postcode.
+  - There is a 2-year no premium increase guarantee – even if you claim.
+  - Provides access to top-quality medical care at almost all UK private hospitals.
+  - Offers international health cover.
+- Aviva Cons:
+  - You aren’t covered for any medical treatment you need when you’re not in the UK.
+  - You won’t be covered for any pre-existing medical conditions.
+  - You can only claim for treatments in hospitals that Aviva has pre-approved.
+  - Other insurance companies might be better suited to the level of cover you need.
+- AXA Cons:
+  - Other insurers may be cheaper or more suitable depending on your age, smoker status, etc.
+  - Can be hard to understand the different policy options without expert advice.
+  - Most plans will only pay for treatment following a diagnosis from your own GP.
+  - Can’t claim for treating any pre-existing or chronic (long-term) medical conditions.
+- Bupa Cons:
+  - Can be hard to understand all of the benefits and features of Bupa policies if you don’t get expert advice.
+  - The Bupa website can be hard to navigate if you are looking for more information.
+  - Policies won’t pay out to treat ongoing or pre-existing medical conditions.
+
+Structure your response:
+1. Acknowledge the user’s details (e.g., family size, location, and specific needs).
+2. Compare Freedom to competitors, emphasizing Freedom's unique benefits while tactfully pointing out competitors’ cons.
+3. Conclude with a clear recommendation for Freedom Health Insurance and include a call-to-action to click your affiliate link.
 `;
 
-        // Send the prompt to OpenAI
-        const response = await openai.createChatCompletion({
-            model: 'gpt-3.5-turbo', // Use a conversational model for more natural responses
-            messages: [
-                { role: 'system', content: 'You are a helpful assistant for recommending private health insurance plans.' },
-                { role: 'user', content: prompt },
-            ],
-            max_tokens: 500,
-        });
+const response = await openai.createChatCompletion({
+    model: 'gpt-3.5-turbo',
+    messages: [
+        { role: 'system', content: 'You are a helpful assistant for recommending private health insurance plans.' },
+        { role: 'user', content: prompt },
+    ],
+    max_tokens: 500,
+});
+
 
         const aiResponse = response.data.choices[0].message.content;
 
