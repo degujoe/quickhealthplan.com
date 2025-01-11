@@ -65,8 +65,20 @@ app.post('/api/get-recommendations', async (req, res) => {
 
     try {
         console.log(`Received prompt: "${userInput}"`);
-        const result = await callOpenAIWithRetry(userInput);
-        res.json({ response: result });
+
+        const response = await openai.createChatCompletion({
+            model: 'gpt-3.5-turbo',
+            messages: [
+                { role: 'system', content: 'You are a helpful assistant for recommending health insurance plans.' },
+                { role: 'user', content: userInput },
+            ],
+            max_tokens: 300,
+        });
+
+        // Extract and send the response back to the client
+        const output = response.data.choices[0].message.content;
+        console.log('Generated Recommendation:', output);
+        res.json({ response: output });
     } catch (error) {
         console.error('Error fetching recommendations:', error.message);
         if (error.response) {
@@ -75,6 +87,7 @@ app.post('/api/get-recommendations', async (req, res) => {
         res.status(500).json({ error: 'An error occurred while generating recommendations.' });
     }
 });
+
 
 // Default endpoint
 app.get('/', (req, res) => {
@@ -100,12 +113,20 @@ app.get('/test-openai', async (req, res) => {
             max_tokens: 50,
         });
 
-        res.json({ message: 'OpenAI API works!', data: response.data });
+        // Log the output to confirm it exists
+        console.log('OpenAI Response:', response.data.choices[0].message.content);
+
+        // Send the response back to the client
+        res.json({
+            message: 'OpenAI API works!',
+            data: response.data.choices[0].message.content,
+        });
     } catch (error) {
         console.error('Error testing OpenAI API:', error);
         res.status(500).json({ error: error.response?.data || error.message });
     }
 });
+
 
 
 
