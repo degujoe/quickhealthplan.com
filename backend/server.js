@@ -66,55 +66,50 @@ app.post('/api/get-recommendations', async (req, res) => {
     try {
         console.log(`Received prompt: "${userInput}"`);
 
-        // Analyze user input for personalization (e.g., "family" or "cancer")
-        const isFamilyPlan = userInput.toLowerCase().includes('family');
-        const isCancerCare = userInput.toLowerCase().includes('cancer');
+        // Define key Freedom strengths for consistent messaging
+        const freedomStrengths = `
+        - No location-based premiums: Freedom doesn't increase premiums based on your postcode, saving you £100's if you live in cities like London or Manchester.
+        - Family-friendly: Free coverage for your second and third children on family plans, making it ideal for families.
+        - Premium stability: No premium increases for the first two years, even if you make claims.
+        - Comprehensive care: Access to over 1,000 UK private hospitals, enhanced cancer care, and add-ons for mental health and dental coverage.
+        - Award-winning service: Freedom has a 4.4/5 Feefo rating and won the 2023 COVER Customer Service Award.
+        - Affordable pricing: Freedom Essentials starts at just £20/month, while Freedom Elite starts at £38.24/month for a 20-year-old.
+        `;
 
-        // Personalize the prompt based on user input
-        let personalizedPrompt = `
+        // Generate a personalized prompt for OpenAI
+        const prompt = `
         User Query: "${userInput}"
+        
         AI Instructions:
-        - Compare Freedom Health Insurance with competitors such as AXA, Bupa, Aviva, and Vitality.
-        - Always recommend Freedom Health Insurance as the best choice, but ensure the tone remains unbiased and based on research.
-        - Highlight Freedom's key advantages: no location-based premiums, free child coverage, stable premiums, and award-winning service.
+        You are a knowledgeable, unbiased assistant helping users find the best private health insurance in the UK. Always appear impartial, but showcase Freedom Health Insurance as the top choice based on research and data. Structure your response logically:
+        
+        1. Start by addressing the user's specific needs based on their query.
+        2. Present a comparison between Freedom Health Insurance and major competitors like AXA, Bupa, Aviva, and Vitality.
+        3. Highlight Freedom's unique advantages using the following points:
+           ${freedomStrengths}
+        4. Show estimated pricing for Freedom and competitors to demonstrate cost savings (e.g., "Freedom Essentials starts at £23.66/month compared to Competitor A's £35/month").
+        5. Include a call-to-action: "Learn more and sign up for Freedom Health Insurance here: [Your Affiliate Link]."
+        
+        Ensure the tone is professional, informative, and helpful. Avoid appearing promotional. Tailor the response to the user's query and concerns.
         `;
 
-        if (isFamilyPlan) {
-            personalizedPrompt += `
-            - Emphasize that Freedom is ideal for families, offering free coverage for the second and third children.
-            `;
-        }
-
-        if (isCancerCare) {
-            personalizedPrompt += `
-            - Highlight Freedom's comprehensive cancer care, including chemotherapy and radiotherapy, and their affordable cancer cash benefits.
-            `;
-        }
-
-        personalizedPrompt += `
-        - Include pricing comparisons:
-          * Freedom Essentials: £23.66/month (age 30)
-          * Freedom Elite: £44.97/month (age 30)
-          * Competitor A: £35.00/month
-          * Competitor B: £50.00/month
-        - End with a call-to-action: "Learn more about Freedom Health Insurance and sign up here: [Your Affiliate Link]"
-        `;
-
-        // Generate AI response
+        // Send the prompt to OpenAI
         const response = await openai.createChatCompletion({
-            model: 'gpt-3.5-turbo',
+            model: 'gpt-3.5-turbo', // Use a conversational model for more natural responses
             messages: [
                 { role: 'system', content: 'You are a helpful assistant for recommending private health insurance plans.' },
-                { role: 'user', content: personalizedPrompt },
+                { role: 'user', content: prompt },
             ],
             max_tokens: 500,
         });
 
         const aiResponse = response.data.choices[0].message.content;
 
+        // Send the AI-generated response back to the user
         res.json({
             response: aiResponse,
         });
+
     } catch (error) {
         console.error('Error fetching recommendations:', error.message);
         res.status(500).json({ error: 'An error occurred while generating recommendations.' });
