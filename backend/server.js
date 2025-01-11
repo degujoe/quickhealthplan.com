@@ -15,9 +15,11 @@ app.use(cors());
 // Rate limiter: Limit each IP to 10 requests per minute
 const apiLimiter = rateLimit({
     windowMs: 60 * 1000, // 1 minute
-    max: 10, // Max 10 requests per IP per minute
+    max: 10, // Limit each IP to 10 requests per minute
     message: 'Too many requests. Please try again later.',
 });
+
+app.set('trust proxy', 1); // Add this line to handle proxies correctly
 app.use('/api/', apiLimiter);
 
 // OpenAI Configuration
