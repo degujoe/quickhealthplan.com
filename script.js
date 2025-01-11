@@ -64,22 +64,49 @@ function displayRecommendations(recommendations) {
     container.appendChild(resultDiv);
 }
 
-function calculateSavings(userDetails) {
-    const { age, children, location, coverage } = userDetails;
+function calculateInsuranceSavings(userDetails) {
+    const { ageGroup, location, children, smoker } = userDetails;
 
-    const freedomPrice = insurancePricing.Freedom[`Age${age}`];
-    const axaPrice = insurancePricing.AXA[`Age${age}`][coverage] * (location === 'London' ? 1.2 : 1);
-    const bupaPrice = insurancePricing.Bupa[`Age${age}`][coverage] * (location === 'London' ? 1.2 : 1);
+    // Base premiums for each age group
+    const basePremiums = {
+        '20s': 538.74,
+        '30s': 754.24,
+        '40s': 1077.48,
+        '50s': 1508.47,
+        '60s': 1831.71,
+    };
 
-    const childSavings = children > 1 ? (children - 1) * 20 : 0; // Assume £20/month per child savings
-    const freedomAdjustedPrice = freedomPrice - childSavings;
+    // Get base premium for age group
+    const basePremium = basePremiums[ageGroup];
+    let freedomPremium = basePremium;
+    let competitorPremium = basePremium;
 
-    const axaSavings = (axaPrice - freedomAdjustedPrice) * 12; // Annual savings
-    const bupaSavings = (bupaPrice - freedomAdjustedPrice) * 12; // Annual savings
+    // Adjust for London premium (23% increase)
+    if (location === 'London') {
+        freedomPremium *= 1; // No increase for Freedom
+        competitorPremium *= 1.23; // Increase for competitors
+    }
+
+    // Add child coverage
+    const childCost = children * 543.84; // Freedom doesn't charge for additional children
+    competitorPremium += childCost;
+
+    // Adjust for smoker status (random increase between 11% and 40%)
+    if (smoker) {
+        const smokerIncrease = Math.random() * (40 - 11) + 11; // Random percentage
+        freedomPremium *= 1 + smokerIncrease / 100;
+        competitorPremium *= 1 + smokerIncrease / 100;
+    }
+
+    // Calculate savings
+    const monthlyFreedomCost = (freedomPremium / 12).toFixed(2);
+    const annualSavings = (competitorPremium - freedomPremium).toFixed(2);
+    const monthlySavings = (annualSavings / 12).toFixed(2);
 
     return {
-        freedomPrice: freedomAdjustedPrice,
-        axaSavings: axaSavings.toFixed(2),
-        bupaSavings: bupaSavings.toFixed(2),
+        monthlyFreedomCost,
+        annualSavings,
+        monthlySavings,
     };
 }
+
