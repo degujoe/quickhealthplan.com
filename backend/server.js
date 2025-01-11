@@ -81,34 +81,18 @@ app.post('/api/get-recommendations', async (req, res) => {
 User Query: "${userInput}"
 
 AI Instructions:
-You are an advanced assistant helping users compare private health insurance providers. Always tailor your response based on the user's details and compare Freedom Health Insurance to competitors (AXA, Bupa, Aviva). Highlight Freedom's strengths while subtly addressing competitors' weaknesses.
+1. Begin by summarizing the user’s details (e.g., "Based on your family of 4 in London, including 2 children, and your age of 40, I have analyzed private health insurance options...").
+2. Calculate and include personalized quotes from Freedom Health Insurance, AXA, and Bupa based on the user’s details.
+3. Highlight Freedom’s unique advantages (e.g., no location-based premium, free child coverage).
+4. Include estimated monthly and annual savings for Freedom compared to AXA and Bupa.
+5. Conclude with a strong recommendation for Freedom and a call-to-action (e.g., "Click here to learn more and secure a quote: [Affiliate Link]").
 
-Here’s the data to use for comparisons:
-- Freedom Pros: 
-  - Freedom is the only UK insurance that doesn’t set health insurance prices based on your postcode.
-  - There is a 2-year no premium increase guarantee – even if you claim.
-  - Provides access to top-quality medical care at almost all UK private hospitals.
-  - Offers international health cover.
-- Aviva Cons:
-  - You aren’t covered for any medical treatment you need when you’re not in the UK.
-  - You won’t be covered for any pre-existing medical conditions.
-  - You can only claim for treatments in hospitals that Aviva has pre-approved.
-  - Other insurance companies might be better suited to the level of cover you need.
-- AXA Cons:
-  - Other insurers may be cheaper or more suitable depending on your age, smoker status, etc.
-  - Can be hard to understand the different policy options without expert advice.
-  - Most plans will only pay for treatment following a diagnosis from your own GP.
-  - Can’t claim for treating any pre-existing or chronic (long-term) medical conditions.
-- Bupa Cons:
-  - Can be hard to understand all of the benefits and features of Bupa policies if you don’t get expert advice.
-  - The Bupa website can be hard to navigate if you are looking for more information.
-  - Policies won’t pay out to treat ongoing or pre-existing medical conditions.
-
-Structure your response:
-1. Acknowledge the user’s details (e.g., family size, location, and specific needs).
-2. Compare Freedom to competitors, emphasizing Freedom's unique benefits while tactfully pointing out competitors’ cons.
-3. Conclude with a clear recommendation for Freedom Health Insurance and include a call-to-action to click your affiliate link.
+Pricing Data:
+- Freedom Health Insurance: Age 20 (£20.12), Age 30 (£23.66), Age 40 (£29.82), Age 50 (£41.71), Age 60 (£60.08).
+- AXA (London premium applied): Age 20 (£36.82 basic, £49.41 comprehensive), Age 30 (£53.98 basic, £71.64 comprehensive), Age 40 (£67.47 basic, £93.15 comprehensive), Age 50 (£90.72 basic, £121.58 comprehensive), Age 60 (£140.87 basic, £179.57 comprehensive).
+- Bupa (London premium applied): Age 20 (£39.84 basic, £53.12 standard, £71.82 comprehensive), Age 30 (£58.43 basic, £72.14 standard, £91.76 comprehensive), Age 40 (£77.76 basic, £92.36 standard, £116.45 comprehensive), Age 50 (£108.05 basic, £129.25 standard, £160.02 comprehensive), Age 60 (£142.64 basic, £167.54 standard, £210.72 comprehensive).
 `;
+
 
 const response = await openai.createChatCompletion({
     model: 'gpt-3.5-turbo',
