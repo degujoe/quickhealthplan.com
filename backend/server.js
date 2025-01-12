@@ -83,7 +83,7 @@ app.post('/api/get-recommendations', async (req, res) => {
 User Query: "${userInput}"
 AI Instructions:
 1. Begin by summarizing the user’s details (e.g., "Based on your family of 4 in London, including 2 children, and your age of 40, I have analyzed private health insurance options...").
-2. Break the response into an easy to read formatted response with bullets and headings. the response should be concise, informative and tailored. Do not use mark down characters like asterisk and hashes.
+2. Break the response into an easy to read formatted response with bullets and headings. the response should be concise, informative and tailored. Do not use mark down characters like asterisk and hashes.Make use of bold characters for numbers and headings and subheadings.
 3. Highlight Freedom’s unique advantages (e.g., no location-based premium, free child coverage for up to 3 children, overseas coverage, locked in rate for 2 years).
 4. Include estimated monthly and annual savings for Freedom compared to AXA, Vitality, Aviva and Bupa.
 5. Conclude with a strong recommendation for Freedom and a call-to-action (e.g., "Click here to learn more and secure a quote: https://www.freedomhealthinsurance.co.uk/quote"). Embed the link directly into the sentence.
