@@ -37,13 +37,13 @@ function displayRecommendations(recommendations) {
     resultDiv.style.borderRadius = '8px';
     resultDiv.style.backgroundColor = '#eef7ff';
     resultDiv.style.color = '#333';
-    resultDiv.style.lineHeight = '1.6';
+    resultDiv.style.lineHeight = '1.8';
     resultDiv.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
 
     resultDiv.innerHTML = `
         <h2 style="color: #0073e6; text-align: center; margin-bottom: 1em;">Your Personalized Recommendations</h2>
         <div style="padding: 1em; background-color: #ffffff; border-radius: 8px;">
-            <p>${recommendations}</p>
+            ${formatRecommendations(recommendations)}
         </div>
         <div style="margin-top: 1em; text-align: center;">
             <button style="
@@ -64,9 +64,19 @@ function displayRecommendations(recommendations) {
     container.appendChild(resultDiv);
 }
 
+function formatRecommendations(recommendations) {
+    // This assumes the recommendations content is plain text. Split into paragraphs or sections if needed.
+    const formatted = recommendations
+        .split('\n')
+        .map(line => `<p style="margin: 0.5em 0;">${line.trim()}</p>`)
+        .join('');
+    return `<div>${formatted}</div>`;
+}
+
 function handleFollowUp() {
     alert('Feel free to ask more questions or provide additional details about your needs!');
 }
+
 
 
 function calculateInsuranceSavings(userDetails) {
