@@ -32,37 +32,42 @@ function displayRecommendations(recommendations) {
     const resultDiv = document.createElement('div');
     resultDiv.classList.add('result');
     resultDiv.style.marginTop = '20px';
-    resultDiv.style.padding = '1em';
-    resultDiv.style.border = '1px solid #ccc';
+    resultDiv.style.padding = '1.5em';
+    resultDiv.style.border = '1px solid #0073e6';
     resultDiv.style.borderRadius = '8px';
-    resultDiv.style.backgroundColor = '#f9f9f9';
+    resultDiv.style.backgroundColor = '#eef7ff';
+    resultDiv.style.color = '#333';
+    resultDiv.style.lineHeight = '1.6';
+    resultDiv.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
 
     resultDiv.innerHTML = `
-        <h2>Your Recommendations</h2>
-        <p>${recommendations}</p>
+        <h2 style="color: #0073e6; text-align: center; margin-bottom: 1em;">Your Personalized Recommendations</h2>
+        <div style="padding: 1em; background-color: #ffffff; border-radius: 8px;">
+            <p>${recommendations}</p>
+        </div>
+        <div style="margin-top: 1em; text-align: center;">
+            <button style="
+                padding: 0.8em 1.5em;
+                background-color: #0073e6;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                font-size: 1em;
+                font-weight: bold;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            " 
+            onclick="handleFollowUp()">Ask More Questions</button>
+        </div>
     `;
 
     container.appendChild(resultDiv);
 }
 
-
-function displayRecommendations(recommendations) {
-    const container = document.querySelector('.container');
-    const resultDiv = document.createElement('div');
-    resultDiv.classList.add('result');
-    resultDiv.style.marginTop = '20px';
-    resultDiv.style.padding = '1em';
-    resultDiv.style.border = '1px solid #ccc';
-    resultDiv.style.borderRadius = '8px';
-    resultDiv.style.backgroundColor = '#f9f9f9';
-
-    resultDiv.innerHTML = `
-        <h2>Your Recommendations</h2>
-        <p>${recommendations}</p>
-    `;
-
-    container.appendChild(resultDiv);
+function handleFollowUp() {
+    alert('Feel free to ask more questions or provide additional details about your needs!');
 }
+
 
 function calculateInsuranceSavings(userDetails) {
     const { ageGroup, location, children, smoker } = userDetails;
