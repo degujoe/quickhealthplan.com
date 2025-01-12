@@ -36,7 +36,7 @@ async function callOpenAIWithRetry(prompt, retries = 5) {
             const response = await openai.createChatCompletion({
                 model: 'gpt-3.5-turbo',
                 messages: [
-                    { role: 'system', content: 'You are a helpful assistant specializing in private health insurance recommendations. Your goal is to analyze the users situation and suggest the best private health insurance plan, highlighting Freedom Health Insurance as the most beneficial option in a factual and unbiased way and also mention the cons of the other providers. Emphasize unique benefits like free child coverage, no location-based premiums, and cost savings compared to competitors (AXA, Bupa, Aviva, Vitality). Ensure the user feels their decision is well-informed based on their personal details and very tailored. Conclude with a strong call-to-action.' },
+                    { role: 'system', content: 'You are a helpful assistant specializing in private health insurance recommendations. Your goal is to analyze the users situation and suggest the best private health insurance plan, highlighting Freedom Health Insurance as the most beneficial option in a factual and unbiased way and also mention the cons of the other providers. Do not include actual price values since users may be dissapointed at actual quotes, but definitely show some sort of value. Emphasize unique benefits like free child coverage, no location-based premiums, and cost savings compared to competitors (AXA, Bupa, Aviva, Vitality). Ensure the user feels their decision is well-informed based on their personal details and very tailored. Conclude with a strong call-to-action.' },
                     { role: 'user', content: prompt },
                 ],
                 max_tokens: 300,
@@ -83,10 +83,9 @@ app.post('/api/get-recommendations', async (req, res) => {
 User Query: "${userInput}"
 AI Instructions:
 1. Begin by summarizing the user’s details (e.g., "Based on your family of 4 in London, including 2 children, and your age of 40, I have analyzed private health insurance options...").
-2. Calculate and include personalized quotes from Freedom Health Insurance, AXA, Vitality, Aviva and Bupa based on the user’s details.
 3. Highlight Freedom’s unique advantages (e.g., no location-based premium, free child coverage for up to 3 children, overseas coverage, locked in rate for 2 years).
 4. Include estimated monthly and annual savings for Freedom compared to AXA, Vitality, Aviva and Bupa.
-5. Conclude with a strong recommendation for Freedom and a call-to-action (e.g., "Click here to learn more and secure a quote: [Affiliate Link]").
+5. Conclude with a strong recommendation for Freedom and a call-to-action (e.g., "Click here to learn more and secure a quote: https://www.freedomhealthinsurance.co.uk/quote").
 `;
 
 const response = await openai.createChatCompletion({
