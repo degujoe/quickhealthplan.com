@@ -101,6 +101,24 @@
             <input type="text" placeholder="Type your healthcare needs here..." id="userPrompt">
             <button onclick="handleInput()">Get Quotes </button>
         </div>
+        <!-- Modal Structure -->
+<div id="resultModal" class="modal">
+    <div class="modal-content">
+        <div id="loading">
+            <h2>Processing Your Request</h2>
+            <div class="loading-bar">
+                <div class="progress"></div>
+            </div>
+            <p id="statusMessage">Checking top providers...</p>
+        </div>
+        <div id="responseContent" style="display: none;">
+            <h2>Your Personalized Recommendations</h2>
+            <p id="aiResponse"></p>
+            <button id="quoteButton" onclick="window.open('https://www.freedomhealthinsurance.co.uk/quote', '_blank')">Secure Quote Now</button>
+        </div>
+    </div>
+</div>
+
     </div>
     <footer>
         <p>&copy; 2025 QuickHealthPlan. All Rights Reserved.</p>
