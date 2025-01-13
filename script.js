@@ -28,41 +28,52 @@ async function handleInput() {
 }
 
 function displayRecommendations(recommendations) {
-    const container = document.querySelector('.container');
-    const resultDiv = document.createElement('div');
-    resultDiv.classList.add('result');
-    resultDiv.style.marginTop = '20px';
-    resultDiv.style.padding = '1.5em';
-    resultDiv.style.border = '1px solid #0073e6';
-    resultDiv.style.borderRadius = '8px';
-    resultDiv.style.backgroundColor = '#eef7ff';
-    resultDiv.style.color = '#333';
-    resultDiv.style.lineHeight = '1.8';
-    resultDiv.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+    const modal = document.getElementById('resultModal');
+    const loading = document.getElementById('loading');
+    const responseContent = document.getElementById('responseContent');
+    const statusMessage = document.getElementById('statusMessage');
+    const aiResponse = document.getElementById('aiResponse');
+    const progress = document.querySelector('.loading-bar .progress');
 
-    resultDiv.innerHTML = `
-        <h2 style="color: #0073e6; text-align: center; margin-bottom: 1em;">Your Personalized Recommendations</h2>
-        <div style="padding: 1em; background-color: #ffffff; border-radius: 8px;">
-            ${formatRecommendations(recommendations)}
-        </div>
-        <div style="margin-top: 1em; text-align: center;">
-            <button style="
-                padding: 0.8em 1.5em;
-                background-color: #0073e6;
-                color: white;
-                border: none;
-                border-radius: 4px;
-                font-size: 1em;
-                font-weight: bold;
-                cursor: pointer;
-                transition: background-color 0.3s ease;
-            " 
-            onclick="handleFollowUp()">Ask More Questions</button>
-        </div>
-    `;
+    // Show the modal
+    modal.style.display = 'flex';
 
-    container.appendChild(resultDiv);
+    // Simulate loading steps
+    const messages = [
+        'Checking top providers...',
+        'Applying deals...',
+        'Calculating savings...',
+        'Finalizing recommendations...'
+    ];
+    let step = 0;
+
+    const interval = setInterval(() => {
+        if (step < messages.length) {
+            statusMessage.textContent = messages[step];
+            step++;
+        }
+    }, 3000);
+
+    // Animate progress bar
+    progress.style.width = '100%';
+
+    // After 15 seconds, show the response
+    setTimeout(() => {
+        clearInterval(interval);
+        loading.style.display = 'none';
+        responseContent.style.display = 'block';
+        aiResponse.innerHTML = recommendations;
+    }, 15000);
 }
+
+// Close modal when clicking outside of it
+window.onclick = function (event) {
+    const modal = document.getElementById('resultModal');
+    if (event.target === modal) {
+        modal.style.display = 'none';
+    }
+};
+
 
 function formatRecommendations(recommendations) {
     // This assumes the recommendations content is plain text. Split into paragraphs or sections if needed.
