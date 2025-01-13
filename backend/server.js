@@ -82,7 +82,7 @@ app.post('/api/get-recommendations', async (req, res) => {
         const prompt = `
 User Query: "${userInput}"
 AI Instructions:
-1. Use <h2> for section headings and `<h3>` for subheadings.
+1. Use <h2> for section headings and <h3> for subheadings.
 2. Use <p> for paragraphs.
 3. Use <ul> and <li> for bullet points.
 4. Highlight important points with <strong> for bold text.
