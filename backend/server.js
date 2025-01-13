@@ -98,8 +98,6 @@ const response = await openai.createChatCompletion({
     max_tokens: 500,
 });
 
-        console.log('AI Response:', response.data.choices[0].message.content);
-
 
         const aiResponse = response.data.choices[0].message.content;
 
