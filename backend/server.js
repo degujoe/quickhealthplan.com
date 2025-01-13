@@ -85,9 +85,9 @@ AI Instructions:
 1. Use <h2> for section headings and <h3> for subheadings.
 2. Use <p> for paragraphs.
 3. Use <ul> and <li> for bullet points.
-4. Highlight important points with <strong> for bold text.
+4. Highlight important points by using <strong> for bold text.
 5. Include hyperlinks with <a href="URL">Clickable Text</a>.
-6. Avoid raw Markdown formatting (like **bold** or [links](url)).
+6. Avoid raw Markdown formatting.
 7. Begin by summarizing the user’s details (e.g., "Based on your family of 4 in London, including 2 children, and your age of 40, I have analyzed private health insurance options...").
 8. Break the response into an easy to read formatted response with bullets and headings. the response should be concise, informative and tailored. Do not use mark down characters like asterisk and hashes.Make use of bold characters for numbers and headings and subheadings.
 9. Highlight Freedom’s unique advantages (e.g., no location-based premium, free child coverage for up to 3 children, overseas coverage, locked in rate for 2 years).
